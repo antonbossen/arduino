@@ -2,12 +2,16 @@ int reset = 0;
 int b0 = 0;
 int b1 = 0;
 int b2 = 0;
-int code[] = { 0, 1, 2, 0, 1};
+int code[] = {0, 1, 2, 0, 1};
 bool red = false;
 bool green = false;
 bool yellow = false;
+int trycode[] = {0, 0, 0, 0, 0};
 
 
+void button_mesh () {
+  
+}
 
 void reset_response() {
   red = true;
@@ -40,6 +44,7 @@ void loop() {
   // put your main code here, to run repeatedly
 
   int input[5];
+  
   for (int i = 0; i <= 3; i++) {
     input[i] = digitalRead(i+2);
     if (input[i]) {
@@ -53,4 +58,16 @@ void loop() {
     }
     delay(100);
 
+  for (int i = 0; i<= 4; i++) {
+    if (input[1] == true) {
+        trycode[i] = 0;
+    }
+    if (input[2] == true) {
+        trycode[i] = 1;
+    }
+    if (input[3] == true) {
+        trycode[i] = 2;
+    }
+  }
+  
 }
