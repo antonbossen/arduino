@@ -1,5 +1,5 @@
 int code[5] = {2, 1, 2, 3, 1};
-bool red = false;
+bool red = true;
 bool green = false;
 bool yellow = false;
 int trycode[5];
@@ -26,7 +26,7 @@ void button_mesh (int state[], int button, int size) {
 
 void reset_response() {
   red = true;
-  for (int i = 0; i < 4; i++) {
+  for (int i = 0; i < 5; i++) {
     trycode[i] = 0;
     }
   for (int i = 0; i <= 4; i++){
@@ -34,6 +34,8 @@ void reset_response() {
     delay(500);
     red = !red;
     }
+  green = false;
+  digitalWrite(7, green);
 }
 
 void setup() {
@@ -87,6 +89,8 @@ void loop() {
   if (same) {
     green = true;
     digitalWrite(7, green);
+    red = false;
+    digitalWrite(6, red);
   }
 
   
