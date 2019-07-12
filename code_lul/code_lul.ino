@@ -1,27 +1,40 @@
-int reset = 0;
-int b0 = 0;
-int b1 = 0;
-int b2 = 0;
-int code[] = {0, 1, 2, 0, 1};
+int code[5] = {2, 1, 2, 3, 1};
 bool red = false;
 bool green = false;
 bool yellow = false;
-int trycode[] = {0, 0, 0, 0, 0};
+int trycode[5];
 
 
-void button_mesh () {
-  
+void print(int arr[], int size) {
+    for (int i = 0; i < size; i++) {
+    Serial.print(arr[i]);
+    
+  }
+  Serial.println();
+}
+
+void button_mesh (int state[], int button, int size) {
+  for (int i = 0; i < size; i++) {
+    if (!state[i]) {
+      if (button != trycode[i -1]) {
+        trycode[i] = button;
+      }
+      break;
+    }
+  }
 }
 
 void reset_response() {
   red = true;
+  for (int i = 0; i < 4; i++) {
+    trycode[i] = 0;
+    }
   for (int i = 0; i <= 4; i++){
     digitalWrite(6, red);
     delay(500);
     red = !red;
     }
 }
-
 
 void setup() {
   // put your setup code here, to run once:
@@ -42,32 +55,42 @@ void setup() {
 void loop() {
   yellow = false;
   // put your main code here, to run repeatedly
-
-  int input[5];
+  int in = 0;
+  int input[4];
   
   for (int i = 0; i <= 3; i++) {
     input[i] = digitalRead(i+2);
     if (input[i]) {
       yellow = true;
+      in = i;
       }
+     
   }
-     digitalWrite(8, yellow);
+  digitalWrite(8, yellow);
+   
 
   if (input[0]) {
     reset_response();
     }
-    delay(100);
-
-  for (int i = 0; i<= 4; i++) {
-    if (input[1] == true) {
-        trycode[i] = 0;
-    }
-    if (input[2] == true) {
-        trycode[i] = 1;
-    }
-    if (input[3] == true) {
-        trycode[i] = 2;
-    }
+  if (in) {
+    button_mesh(trycode, in, 5);
   }
+  print(trycode, 5);
+  Serial.println(in);
+  bool same = true;
+  for (int i = 0; i < 5; i++) {
+    if (trycode[i] != code[i]) {
+      same = false;
+      break;
+      }
+    }
+  if (same) {
+    green = true;
+    digitalWrite(7, green);
+  }
+
+  
+
+
   
 }
